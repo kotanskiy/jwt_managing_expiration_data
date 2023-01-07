@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: "back/"
+      dockerfile: "Dockerfile"
+    image: jwt-refresh-back:latest
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    environment:
+      MONGO_URL: "mongodb://mongodb:27017"
+    env_file:
+      - back/conf/.env
+    volumes:
+      - ./back:/opt/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    environment:
+      - "MONGO_INITDB_DATABASE=jwt_managing_expiration_data"
+    command:
+      mongod --quiet --logpath /dev/null
