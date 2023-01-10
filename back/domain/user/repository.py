@@ -15,9 +15,9 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    async def retrieve(self, user_id: UUID) -> Optional[User]:
+    async def retrieve(self, user_id: UUID) -> User:
         pass
 
     @abstractmethod
-    async def retrieve_by_username(self, username: str) -> Optional[User]:
+    async def retrieve_by_username(self, username: str) -> User:
         pass

@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from motor.motor_asyncio import AsyncIOMotorCollection
@@ -49,7 +48,7 @@ class UserRepositoryMongo(IUserRepository):
             raise UserNotFoundError()
         return self._doc_to_user_adapter(user_doc)
 
-    async def retrieve_by_username(self, username: str) -> Optional[User]:
+    async def retrieve_by_username(self, username: str) -> User:
         user_doc = await self._collection.find_one({"username": username})
         if user_doc is None:
             raise UserNotFoundError()
