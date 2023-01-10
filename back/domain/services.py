@@ -21,7 +21,6 @@ class UserService:
         except UserNotFoundError:
             user = User.create(username, password)
         await self._repository.create(user)
-        print(user)
         return user
 
     async def update_bio(self, user_id: UUID, bio: str):
