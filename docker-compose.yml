@@ -5,7 +5,7 @@ services:
     build:
       context: "back/"
       dockerfile: "Dockerfile"
-    image: jwt-refresh-back:latest
+    image: jwt-refresh-api:latest
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
     environment:
       MONGO_URL: "mongodb://mongodb:27017"
@@ -15,6 +15,21 @@ services:
       - ./back:/opt/
     ports:
       - "8000:8000"
+    depends_on:
+      - mongodb
+
+  devtools:
+    build:
+      context: "back/"
+      dockerfile: "Dockerfile"
+    image: jwt-refresh-api:latest
+    command: sleep infinity
+    environment:
+      MONGO_URL: "mongodb://mongodb:27017"
+    env_file:
+      - back/conf/.env
+    volumes:
+      - ./back:/opt/
     depends_on:
       - mongodb
 
