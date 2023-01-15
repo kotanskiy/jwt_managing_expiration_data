@@ -1,5 +1,4 @@
 import hashlib
-from typing import Optional
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel
@@ -12,7 +11,7 @@ class Permission(BaseModel):
         return self.name == other.name
 
 
-class User(BaseModel):
+class Profile(BaseModel):
     id: UUID
     username: str
     password_hash: str
@@ -24,7 +23,7 @@ class User(BaseModel):
         return hashlib.sha256(password.encode()).hexdigest()
 
     @classmethod
-    def create(cls, username: str, password: str) -> "User":
+    def create(cls, username: str, password: str) -> "Profile":
         return cls(
             id=uuid4(),
             username=username,

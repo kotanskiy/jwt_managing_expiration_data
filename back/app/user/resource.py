@@ -4,8 +4,8 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 
 from domain.services import UserService
-from domain.user.exceptions import UserNotFoundError
-from domain.user.models import User
+from domain.profile.exceptions import UserNotFoundError
+from domain.profile.models import Profile
 
 
 class UserResponse(BaseModel):
@@ -15,7 +15,7 @@ class UserResponse(BaseModel):
     permissions: list[str]
 
     @classmethod
-    def from_user(cls, user: User) -> "UserResponse":
+    def from_user(cls, user: Profile) -> "UserResponse":
         return UserResponse(
             id=user.id,
             username=user.username,

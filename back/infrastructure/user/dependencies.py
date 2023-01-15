@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.user.resource import UserResource
 from domain.services import UserService
-from domain.user.repository import IUserRepository
+from domain.profile.repository import IUserRepository
 from infrastructure.mongo import get_mongo_database
 from infrastructure.user.repository import UserRepositoryMongo
 

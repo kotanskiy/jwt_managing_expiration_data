@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
-from app.auth.jwt import Payload
+from infrastructure.auth.jwt import Payload
 from app.user.resource import UserResponse, UserResource
 from infrastructure.auth.dependencies import jwt_auth
 from infrastructure.user.dependencies import get_user_resource

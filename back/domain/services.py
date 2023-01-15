@@ -1,11 +1,11 @@
 from uuid import UUID
 
-from domain.user.exceptions import UserError, UserNotFoundError
-from domain.user.models import User, Permission
-from domain.user.repository import IUserRepository
+from domain.profile.exceptions import ProfileError, UserNotFoundError
+from domain.profile.models import Profile, Permission
+from domain.profile.repository import IUserRepository
 
 
-class UserAlreadyExistsError(UserError):
+class ProfileAlreadyExistsError(ProfileError):
     message = "User already exists"
 
 
@@ -13,13 +13,13 @@ class UserService:
     def __init__(self, repository: IUserRepository):
         self._repository = repository
 
-    async def create(self, username: str, password: str) -> User:
+    async def create(self, username: str, password: str) -> Profile:
         try:
             user = await self._repository.retrieve_by_username(username)
             if user:
-                raise UserAlreadyExistsError()
+                raise ProfileAlreadyExistsError()
         except UserNotFoundError:
-            user = User.create(username, password)
+            user = Profile.create(username, password)
         await self._repository.create(user)
         return user
 
@@ -28,10 +28,10 @@ class UserService:
         user.update_bio(bio)
         await self._repository.update(user)
 
-    async def retrieve(self, user_id: UUID) -> User:
+    async def retrieve(self, user_id: UUID) -> Profile:
         return await self._repository.retrieve(user_id)
 
-    async def retrieve_by_username(self, username: str) -> User:
+    async def retrieve_by_username(self, username: str) -> Profile:
         return await self._repository.retrieve_by_username(username)
 
     async def add_permission_to_user(self, user_id: UUID, permission_name: str):

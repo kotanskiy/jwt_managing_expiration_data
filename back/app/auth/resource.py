@@ -3,12 +3,12 @@ from uuid import UUID
 from fastapi import Response, HTTPException
 from jwt import InvalidTokenError
 
-from app.auth.jwt import JWTService
+from infrastructure.auth.jwt import JWTService
 from app.user.resource import UserResponse
 from conf import Settings
-from domain.services import UserService, UserAlreadyExistsError
-from domain.user.exceptions import UserNotFoundError
-from domain.user.models import User
+from domain.services import UserService, ProfileAlreadyExistsError
+from domain.profile.exceptions import UserNotFoundError
+from domain.profile.models import Profile
 
 
 AUTH_ERROR_MSG = "Authentication failed"
@@ -26,7 +26,7 @@ class AuthResource:
         response.set_cookie("accessToken", access_token, httponly=True, secure=True, max_age=self._access_max_age)
         response.set_cookie("refreshToken", refresh_token, httponly=True, secure=True, max_age=self._refresh_max_age)
 
-    def _set_user_auth_cookies(self, user: User, response: Response):
+    def _set_user_auth_cookies(self, user: Profile, response: Response):
         self._set_auth_cookies(response, str(user.id), user.username, [p.name for p in user.permissions])
 
     async def login(self, username: str, password: str, response: Response) -> UserResponse:
@@ -52,7 +52,7 @@ class AuthResource:
     async def registration(self, username: str, password: str, response: Response) -> UserResponse:
         try:
             user = await self._user_service.create(username, password)
-        except UserAlreadyExistsError as err:
+        except ProfileAlreadyExistsError as err:
             raise HTTPException(status_code=400, detail=err.message)
         self._set_user_auth_cookies(user, response)
         return UserResponse.from_user(user)
